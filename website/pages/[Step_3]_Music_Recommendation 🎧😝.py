@@ -20,7 +20,7 @@ else:
     st.write("No selected genre found. Please complete the previous step.")
 
 # 1. playlist 배경, 감정 거르기
-playlist = pd.read_csv('../final_playlist.csv')
+playlist = pd.read_csv('final_playlist.csv')
 playlist = playlist[playlist['배경'] == background_result] #배경으로 한 번 거르고
 
 #face_emotion으로 다시 거르기

@@ -24,7 +24,7 @@ def autoplay_video(file_path: str):
         # Display the video in Streamlit using markdown with unsafe_allow_html=True
         st.markdown(video_html, unsafe_allow_html=True)
 
-st.image('../web_logo.png', use_column_width=True)
+st.image('web_logo.png', use_column_width=True)
 
 st.markdown('''
 <style>
@@ -75,7 +75,7 @@ st.markdown("""
         }
     </style>""", unsafe_allow_html=True)
 
-autoplay_video("../instagram.mov")
+autoplay_video("instagram.mov")
 
 st.markdown('''
 <div class="instructions-box">

@@ -45,7 +45,7 @@ class CustomResNet50(nn.Module):
 
 def load_model(device):
     # Load the background classification model
-    model_path = '../resnet50_best_adamW.pth'
+    model_path = 'resnet50_best_adamW.pth'
     model = models.resnet50(pretrained=False)
     num_features = model.fc.in_features
     model.fc = nn.Linear(num_features, len(background_classes))
@@ -55,7 +55,7 @@ def load_model(device):
     model.eval()
 
     # Load the emotion classification model
-    face_model = torch.load('../emotion_classification.pth')
+    face_model = torch.load('emotion_classification.pth')
     face_model = face_model.to(device)  # Initialize the model and send it to the device
     face_model.eval()
 
