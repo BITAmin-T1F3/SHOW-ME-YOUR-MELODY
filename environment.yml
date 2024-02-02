@@ -1,17 +1,17 @@
 name: myenv
 channels:
   - conda-forge
-  - pytorch
+  - defaults
 dependencies:
   - python=3.10
-  - numpy=1.24.2
-  - pandas=2.0.0
-  - Pillow=9.5.0
-  - pytorch=2.0.1
-  - torchvision=0.15.2
-  - opencv=4.7.0
-  - ipython=8.12.0
-  - dlib=19.24.2
   - pip
+  - dlib
+  - numpy
+  - pandas
+  - Pillow
+  - torch
+  - torchvision
+  - opencv
+  - ipython
   - pip:
-      - streamlit==1.25.0
+      - streamlit
