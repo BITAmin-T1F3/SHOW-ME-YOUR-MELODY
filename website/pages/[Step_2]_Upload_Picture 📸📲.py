@@ -155,7 +155,10 @@ def classify_emotion(model, pil_image, emotion_classes, device):
 uploaded_file = st.file_uploader("📸 인스타그램에 올리고싶은 이미지를 업로드해주시길 바랍니다!", type=['png', 'jpg', 'jpeg'])
 
 # device
-device = torch.device("mps")
+if torch.cuda.is_available():
+    device = torch.device("cuda")
+else:
+    device = torch.device("cpu")
 
 # models
 background_model, face_model = load_model(device)
