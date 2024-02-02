@@ -84,7 +84,7 @@ def classify_background(model, image_tensor, background_classes):
     predicted_class_index = torch.argmax(output, dim=1).item()
     background = background_classes[predicted_class_index]
     
-    st.markdown(f"<strong><p class='big-font' style='text-align: center;'>Predicted background label: {background}</p></strong>", unsafe_allow_html=True)
+    st.markdown(f"<strong><p class='big-font' style='text-align: center;'>🌃 Predicted background label: {background}</p></strong>", unsafe_allow_html=True)
     st.session_state.background_result = background
 
     return background
@@ -134,7 +134,17 @@ def classify_emotion(model, pil_image, emotion_classes, device):
 
         # Display the image using Streamlit
         st.image(frame_rgb, caption="Uploaded Image")
-        st.markdown(f"<strong><p class='big-font' style='text-align: center;'>Predicted emotion label: {label}</p></strong>", unsafe_allow_html=True)
+
+        if label == 'Happy':
+            emoticon = '😊'
+        elif label == 'Neutral':
+            emoticon = '😐'
+        elif label == 'Sad':
+            emoticon = '😭'
+        elif label == 'Surprised':
+            emoticon = '🫢'
+        
+        st.markdown(f"<strong><p class='big-font' style='text-align: center;'>Predicted emotion label: {label} {emoticon}</p></strong>", unsafe_allow_html=True)
         st.session_state.emotion_result = label
 
     else:
