@@ -61,7 +61,7 @@ else:
         final_selection = playlist.sample(n=3, replace=True)  # Use replace=True for sampling with replacement
 
 # Create a new DataFrame with only '가수', '노래 제목', and '앨범사진' columns
-display_df = final_selection[['가수', '노래 제목', '앨범사진']].copy()
+display_df = final_selection[['가수', '노래 제목', '앨범사진', '장르']].copy()
 
 # Extract URLs from HTML tags in the '앨범사진' column
 display_df['앨범사진'] = display_df['앨범사진'].apply(lambda x: re.search('src=\"(.*?)\"', x).group(1) if (pd.notnull(x) and re.search('src=\"(.*?)\"', x) is not None) else x)
@@ -69,14 +69,13 @@ display_df['앨범사진'] = display_df['앨범사진'].apply(lambda x: re.searc
 # Display the DataFrame with album images
 if not final_selection.empty:
     for idx, row in display_df.iterrows():
-        st.markdown(f"**{row['가수']}** - {row['노래 제목']}")
+        st.markdown(f"**{row['가수']}** - **{row['노래 제목']}** (장르 -{row['장르']})")
 
-        # Safely extract URL from the '앨범사진' column
-        match = re.search('src=\"(.*?)\"', row['앨범사진'])
-        if match and pd.notnull(row['앨범사진']):
-            album_image_url = match.group(1)
+        album_image_url = row['앨범사진']
+        if album_image_url:
             st.image(album_image_url)
         else:
             st.write("No album image available.")
+
 else:
     st.write("No songs found based on the selected criteria.")
