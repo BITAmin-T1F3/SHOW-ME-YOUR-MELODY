@@ -75,7 +75,7 @@ st.markdown("""
         }
     </style>""", unsafe_allow_html=True)
 
-autoplay_video("../RPReplay_Final1706802318.mov")
+autoplay_video("../instagram.mov")
 
 st.markdown('''
 <div class="instructions-box">
