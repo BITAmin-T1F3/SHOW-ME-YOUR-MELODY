@@ -61,21 +61,76 @@ else:
         final_selection = playlist.sample(n=3, replace=True)  # Use replace=True for sampling with replacement
 
 # Create a new DataFrame with only '가수', '노래 제목', and '앨범사진' columns
-display_df = final_selection[['가수', '노래 제목', '앨범사진', '장르']].copy()
+display_df = final_selection[['가수', '노래 제목', '앨범사진', '장르', 'first video link']].copy()
 
 # Extract URLs from HTML tags in the '앨범사진' column
 display_df['앨범사진'] = display_df['앨범사진'].apply(lambda x: re.search('src=\"(.*?)\"', x).group(1) if (pd.notnull(x) and re.search('src=\"(.*?)\"', x) is not None) else x)
 
-# Display the DataFrame with album images
+
+st.markdown("""
+    <style>
+        .title-style {
+            font-size: 20px;
+        }
+        .artist-style {
+            font-size: 20px;
+        }
+        .genre-style {
+            font-size: 15px;
+        }
+        /* Targeting Streamlit's primary buttons */
+        button.stButton>button {
+            border: 1px solid #f0f0f0;
+            color: black; /* Adjust text color as needed */
+            background-color: #f0f0f0;
+        }
+        /* Adjust hover state as well */
+        button.stButton>button:hover {
+            border: 1px solid #e6e6e6;
+            background-color: #e6e6e6;
+        }
+    </style>
+    """, unsafe_allow_html=True)
+
+
 if not final_selection.empty:
+
+    st.markdown("""
+        <h2 style='text-align: center;'>추천 결과 🎧😝</h2>
+        <div style='margin:auto; margin-bottom: 20px; width: 50%; border-bottom: 2px solid #f0f0f0;'></div>
+    """, unsafe_allow_html=True)
+
     for idx, row in display_df.iterrows():
-        st.markdown(f"**{row['가수']}** - **{row['노래 제목']}** (장르 -{row['장르']})")
+        col1, col2 = st.columns([1, 3])
 
-        album_image_url = row['앨범사진']
-        if album_image_url:
-            st.image(album_image_url)
-        else:
-            st.write("No album image available.")
+        with col1:
+            album_image_url = row['앨범사진']
+            if album_image_url:
+                st.image(album_image_url, use_column_width=True)
+            else:
+                st.write("No album image available.")
 
+        # Displaying song title, artist, and genre in the second column
+        col2.markdown(f"<span class='title-style'>**Title:** **{row['노래 제목']}**</span>", unsafe_allow_html=True)
+        col2.markdown(f"<span class='artist-style'>**Artist:** **{row['가수']}**</span>", unsafe_allow_html=True)
+        col2.markdown(f"<span class='genre-style'>**Genre:** **{row['장르']}**</span>", unsafe_allow_html=True)
+
+        # Buttons for liking or disliking the recommendation
+        like_button, dislike_button = col2.columns([1, 4])
+        if like_button.button('좋아요 👍', key=f"like_{idx}"):
+            # Handle the like action here
+            st.session_state[f"liked_{idx}"] = True  # Example of setting session state
+            st.success("You liked this recommendation!")
+
+        if dislike_button.button('싫어요 👎', key=f"dislike_{idx}"):
+            # Handle the dislike action here
+            st.session_state[f"disliked_{idx}"] = False  # Example of setting session state
+            st.error("You disliked this recommendation!")
+
+        # Display the video below the genre and like/dislike buttons
+        st.video(row['first video link'])
+        
+        # Separator for each recommendation
+        st.markdown("---")
 else:
     st.write("No songs found based on the selected criteria.")
